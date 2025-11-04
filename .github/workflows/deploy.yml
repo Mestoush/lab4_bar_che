@@ -7,19 +7,21 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Create versioned directory
+      - name: Prepare versioned folder
         run: |
-            mkdir -p public/v${{ github.event.release.tag_name }}
-            cp -r ./* public/v${{ github.event.release.tag_name }}/
-            rm -rf public/v${{ github.event.release.tag_name }}/.github
+          mkdir -p v${{ github.event.release.tag_name }}
+          cp -r ./* v${{ github.event.release.tag_name}}/
+          rm -rf v${{ github.event.release.tag_name}}/.git
+          rm -rf v${{ github.event.release.tag_name}}/.github
 
-      - name: Deploy to gh-pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./
           publish_branch: gh-pages
