@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
 on:
-  release:
-    types: [published]
+  release: # триггер, который реагирует на события, связанные с релизами
+    types: [published] # запускает workflow только когда релиз опубликован
 
 jobs:
   deploy:
@@ -13,8 +13,9 @@ jobs:
 
       - name: Create versioned directory
         run: |
-          mkdir -p public/v${{ github.event.release.tag_name }}
-          cp -r * public/v${{ github.event.release.tag_name }}
+            mkdir -p public/v${{ github.event.release.tag_name }}
+            cp -r ./* public/v${{ github.event.release.tag_name }}/
+            rm -rf public/v${{ github.event.release.tag_name }}/.github
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
