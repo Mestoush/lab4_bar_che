@@ -14,10 +14,9 @@ jobs:
 
       - name: Prepare versioned folder
         run: |
-          mkdir -p v${{ github.event.release.tag_name }}
-          cp -r ./* v${{ github.event.release.tag_name}}/
-          rm -rf v${{ github.event.release.tag_name}}/.git
-          rm -rf v${{ github.event.release.tag_name}}/.github
+            mkdir -p v${{ github.event.release.tag_name }}
+            cp -r $(ls -A | grep -v "^v${{ github.event.release.tag_name }}$" | grep -v "^.git$" | grep -v "^.github$") v${{ github.event.release.tag_name}}/
+
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
